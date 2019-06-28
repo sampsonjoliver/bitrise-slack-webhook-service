@@ -1,6 +1,8 @@
 import * as request from 'request-promise';
 
-import { BitriseBuildConfig } from './models';
+import { BitriseBuildConfig } from '../models';
+
+export type BitriseService = ReturnType<typeof makeBitriseService>;
 
 export const makeBitriseService = (url: string) => {
   return {
@@ -17,16 +19,16 @@ export const makeBitriseService = (url: string) => {
   };
 };
 
-export const buildTextField = (obj: BitriseBuildConfig) => {
-  const { env, ...rest } = obj;
-  const baseConfig = Object.entries(rest)
+export const buildTextField = ({ env, ...buildParams }: BitriseBuildConfig) => {
+  const baseConfig = Object.entries(buildParams)
     .map(it => it.join(':'))
     .join('|');
-  const envConfig = env
+
+  const envParams = env
     ? Object.entries(env)
         .map(it => `ENV[${it[0]}]:${it[1]}`)
         .join('|')
     : null;
 
-  return baseConfig.concat(envConfig ? `|${envConfig}` : '');
+  return baseConfig.concat(envParams ? `|${envParams}` : '');
 };

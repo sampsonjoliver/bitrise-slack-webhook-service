@@ -24,8 +24,12 @@ export type BitriseBuildConfig = {
   env: { [key: string]: string };
 };
 
-export type CIConfig = Array<
-  BitriseBuildConfig & {
-    buttonText: string;
-  }
->;
+export type CIConfig = Array<{
+  workflow: string;
+  tag?: string;
+  branch?: string;
+  commit?: string;
+  message?: string;
+  env: { [key: string]: string };
+  buttonText: string;
+}>;
